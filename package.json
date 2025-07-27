@@ -1,0 +1,18 @@
+{
+  "name": "leetcode-project",
+  "version": "1.0.0",
+  "description": "- No, if any user gives us any harmful code which delete our backend files\r - we will use Judge0, we will give code + input + desired output + language used to it , then it will give result to us",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.5"
+  }
+}
