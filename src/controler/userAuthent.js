@@ -1,3 +1,4 @@
+const redisClient = require('../../../Backend/Lecture24(Redis indepth)/config/redis');
 const User = require('../models/user');
 const validate = require('../utils/validator');
 const bcrypt = require('bcrypt');
@@ -65,8 +66,26 @@ const login = async (req, res) => {
 const logout = async(req,res)=>{
      try{
 
+        // validate the token // if Invalid token, then it is already Logged out
+        // we will make its Middleware, since we will validate the token Most of the time
+        
+        // add token to blacklist in Redis
+        const {token} = req.cookies;
+
+        const {payload} = jwt.decode(token);
+
+        console.log("first");
+        await redisClient.set(`token:${token}`,`blocked`);
+        console.log("second");
+        await redisClient.expireAt(`token:${token}`,payload.exp); // set expiry same as token expiry
+        console.log("third");
+        // Clear the Cookie
+        res.cookie("token",null,{expires: new Date(Date.now())});
+        res.status(200).send("Logged out successfully");
      }
      catch(err){
-        
+        res.status(401).send("Error: " + err);
      }
 }
+
+module.exports = {register,login,logout};
