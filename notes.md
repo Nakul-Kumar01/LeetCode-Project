@@ -25,6 +25,10 @@ here, Object.keys(data) will form array of keys of data
 - 401 unauthrized access
 
 
+### Frontend:
+- dazyai , sersian for ui
+
+
 ### Mongoose Commands
 - create
 - exist

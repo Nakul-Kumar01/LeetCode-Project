@@ -30,3 +30,7 @@
 - Submit Schema (user Solution, Problem ID, solution/accept/reject)
 
 
+# Creating Admin role:
+if any Intern has to be Admin of my Platform then only I can assign him/her admin role. Because only Admin can register another admin
+- for first admin you can register manully in DB.
+

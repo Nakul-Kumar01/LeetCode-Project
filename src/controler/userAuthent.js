@@ -1,4 +1,4 @@
-const redisClient = require('../../../Backend/Lecture24(Redis indepth)/config/redis');
+const redisClient = require('../config/redis');
 const User = require('../models/user');
 const validate = require('../utils/validator');
 const bcrypt = require('bcrypt');
@@ -13,6 +13,8 @@ const register = async (req, res) => {
         // also we can check here whether emailId is already registered or not
         // user.exists({ emailId: req.body.emailId }) // but no need, since already checked schema
 
+        req.body.role = "user"; // by default role is user // also if user try to be admin, then he/she demoted to user
+
         req.body.password = await bcrypt.hash(req.body.password, 10);
 
 
@@ -20,7 +22,7 @@ const register = async (req, res) => {
 
 
         // no need of await
-        const token = jwt.sign({ _id: user._id, emailId: req.body.emailId }, process.env.JWT_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ _id: user._id, emailId: req.body.emailId,role:"user" }, process.env.JWT_KEY, { expiresIn: '1h' });
 
         res.cookie('token', token, { maxAge: 60 * 60 * 1000 }); // you can also use expire 
         res.status(201).send("User registered successfully"); // 202 after successful post request
@@ -52,7 +54,7 @@ const login = async (req, res) => {
             throw new Error('Invalid Credentials');
         }
 
-        const token = jwt.sign({ _id: user._id, emailId: req.body.emailId }, process.env.JWT_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ _id: user._id, emailId: req.body.emailId,role:user.role }, process.env.JWT_KEY, { expiresIn: '1h' });
 
         res.cookie('token', token, { maxAge: 60 * 60 * 1000 });
         res.status(200).send("Logged in successfully");
@@ -63,29 +65,29 @@ const login = async (req, res) => {
 }
 
 
-const logout = async(req,res)=>{
-     try{
+const logout = async (req, res) => {
+    try {
 
         // validate the token // if Invalid token, then it is already Logged out
         // we will make its Middleware, since we will validate the token Most of the time
-        
+
         // add token to blacklist in Redis
-        const {token} = req.cookies;
+        const { token } = req.cookies;
 
-        const {payload} = jwt.decode(token);
+        const payload = jwt.decode(token);
 
-        console.log("first");
-        await redisClient.set(`token:${token}`,`blocked`);
-        console.log("second");
-        await redisClient.expireAt(`token:${token}`,payload.exp); // set expiry same as token expiry
-        console.log("third");
+        // console.log("first");
+        await redisClient.set(`token:${token}`, `blocked`);
+        // console.log("second");
+        await redisClient.expireAt(`token:${token}`, payload.exp); // set expiry same as token expiry
+        // console.log("third");
         // Clear the Cookie
-        res.cookie("token",null,{expires: new Date(Date.now())});
+        res.cookie("token", null, { expires: new Date(Date.now()) });
         res.status(200).send("Logged out successfully");
-     }
-     catch(err){
+    }
+    catch (err) {
         res.status(401).send("Error: " + err);
-     }
+    }
 }
 
-module.exports = {register,login,logout};
+module.exports = { register, login, logout };
