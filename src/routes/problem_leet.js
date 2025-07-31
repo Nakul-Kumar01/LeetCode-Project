@@ -9,5 +9,5 @@ problemRouter.delete('/:id', deleteProblem);
 problemRouter.patch('/:id', updateProblem);
 
 problemRouter.get('/', getAllProblems);
-problemRouter.get('/:id', getProblem);
+problemRouter.get('/:id', getProblemById);
 problemRouter.get('/user', solvedProblems);

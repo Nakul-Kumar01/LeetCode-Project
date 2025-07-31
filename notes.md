@@ -9,6 +9,7 @@ bcrypt
 jsonwebtoken
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 redis
+axios
 
 
 
@@ -33,6 +34,11 @@ here, Object.keys(data) will form array of keys of data
 - create
 - exist
 - findOne
+
+
+### why we use Axios if we have Fetch ??
+- it automatically transforms JSON data, so you don't hv to do response.json() like with Fetch
+- error handling: with Fetch you hv to check if the response is ok and throw an error yourself. Axios does this automatically
 
 
 Tasks To Be resolved:
