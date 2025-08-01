@@ -43,5 +43,33 @@ return await fetchData();
 
 }
 
+const submitToken = async(resultToken)=>{
+
+const options = {
+  method: 'GET',
+  url: 'https://judge0-extra-ce.p.rapidapi.com/submissions/batch',
+  params: {
+    tokens: resultToken.join(','),
+    base64_encoded: 'true',
+    fields: '*'
+  },
+  headers: {
+    'x-rapidapi-key': '96c5a604b5mshd21c6998c58a28cp1ccd90jsnfb693b37ecb9',
+    'x-rapidapi-host': 'judge0-extra-ce.p.rapidapi.com'
+  }
+};
+
+async function fetchData() {
+	try {
+		const response = await axios.request(options);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+const result = await fetchData();
+}
+
 
 module.exports = {getIdByLanguage,submitBatch};

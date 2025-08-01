@@ -12,8 +12,6 @@ const createProblem = async (req, res) => {
     // AXIOS : it is updation on Fetch 
     // since, we have limited API, therefore we will send complete batch of visible test cases // and it will verify all of them at once
 
-
-
     try {
 
         for (const { language, completeCode } of referenceSolution) {
@@ -28,9 +26,7 @@ const createProblem = async (req, res) => {
                 expected_output: output
             }));
 
-          const submitResult =  await submitBatch(Submission);
-
-          
+          const submitResult =  await submitBatch(Submission);       
           /*
           Judge0 : 2 step process 
           1) first it submit BatchSubmission, and it will return array of tokens
@@ -42,7 +38,9 @@ const createProblem = async (req, res) => {
            // therefore, it gave us token(to identify our submission) // ki thodi derr baad aana
           */
 
+          const resultToken = submitResult.map(value=>value.token); // it is format for Judge0: make GET request with array of each Token
 
+          const testResult = await submitToken(resultToken);
         }
 
     } 

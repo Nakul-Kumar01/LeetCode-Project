@@ -36,6 +36,10 @@ here, Object.keys(data) will form array of keys of data
 - findOne
 
 
+### JS Command:
+- array.join(','); // return a string with comma seperated elements
+
+
 ### why we use Axios if we have Fetch ??
 - it automatically transforms JSON data, so you don't hv to do response.json() like with Fetch
 - error handling: with Fetch you hv to check if the response is ok and throw an error yourself. Axios does this automatically
